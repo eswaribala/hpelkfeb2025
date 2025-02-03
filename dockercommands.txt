@@ -2,3 +2,5 @@
   docker-compose up
 #list 
   docker container ls -a
+#to check logstash
+docker exec -it <containerid> /bin/bash
