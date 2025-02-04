@@ -1,0 +1,25 @@
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "users",
+        "alias": "hp_users"
+      }
+    }
+  ]
+}
+
+GET /hp_users/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "user",
+      "query": {
+        "match": {
+          "employeeId": 1001
+        }
+      }
+    }
+  }
+}
