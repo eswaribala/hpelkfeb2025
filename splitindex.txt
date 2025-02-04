@@ -1,0 +1,22 @@
+#prerequiiste
+#block create update,delete
+
+PUT /customers/_settings
+{
+  "index": {
+    "blocks": {
+      "write": true
+    }
+  }
+}
+#after block
+
+POST /customers/_split/customersv1
+{
+  "settings": {
+    "index.number_of_shards": 5
+  },
+  "aliases": {
+    "my_search_indices": {}
+  }
+}
