@@ -23,3 +23,17 @@ GET /hp_users/_search
     }
   }
 }
+
+
+
+POST /_aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index": "users",
+        "alias": "hp_users"
+      }
+    }
+  ]
+}
