@@ -1,0 +1,96 @@
+PUT /users
+{
+  "settings": {
+    "number_of_replicas": 1,
+"number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "user":{
+        "properties": {
+          "userName":{
+            "type":"text"
+          },
+          "employeeId":{
+            "type":"integer"
+          }
+        }
+      },
+      "role":{
+        "properties": {
+          "roleId":{
+            "type":"integer"
+          },
+          "roleName":{
+            "type":"text"
+          }
+        }
+      },
+      "user_role":{
+        "type":"join",
+    "relations":{
+      "user":"role"
+    }
+
+      }
+      
+    }
+  }
+}
+
+POST /users/_doc/1?routing=user1
+{
+  "userName":"user1",
+  "employeeId":1001,
+  "user_role": {
+    "name": "user"
+  }
+}
+
+POST /users/_doc/2?routing=user1
+{
+  "roleId":"1",
+  "roleName":"developer",
+  "user_role": {
+    "name": "role",
+     "parent": 1
+
+  }
+}
+POST /users/_doc/3?routing=user1
+{
+  "roleId":"2",
+  "roleName":"Team Coordinator",
+  "user_role": {
+    "name": "role",
+     "parent": 1
+
+  }
+}
+
+
+GET /users/_search 
+{
+   "query":{
+      "has_parent":{
+         "parent_type":"user",
+         "query": {
+"match_all": {}
+         }
+      }
+   }
+}
+
+
+GET users/_search
+{
+  "query": {
+    "has_child": {
+      "type": "role",
+      "query": {
+        "match_all": {}
+      }
+     
+    }
+  }
+}
