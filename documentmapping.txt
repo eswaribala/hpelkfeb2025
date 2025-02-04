@@ -81,7 +81,19 @@ GET /users/_search
    }
 }
 
-
+GET /users/_search 
+{
+   "query":{
+      "has_parent":{
+         "parent_type":"user",
+         "query": {
+"match": {
+            "employeeId": 1001
+          }
+         }
+      }
+   }
+}
 GET users/_search
 {
   "query": {
