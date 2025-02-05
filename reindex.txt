@@ -1,0 +1,50 @@
+PUT /transaction
+{
+  "mappings": {
+    "properties": {
+      "name": { "type": "text" },
+      "age": { "type": "integer" },
+      "status": { "type": "keyword" },
+      "extra_field": { "type": "text" },
+      "timestamp": { "type": "date" }
+    }
+  }
+}
+
+POST /transaction/_bulk
+{ "index": { "_id": 1 } }
+{ "name": "Alice", "age": 30, "status": "active", "extra_field": "to_remove", "timestamp": "2025-01-01T10:00:00Z" }
+{ "index": { "_id": 2 } }
+{ "name": "Bob", "age": 25, "status": "inactive", "extra_field": "to_remove", "timestamp": "2025-01-02T11:00:00Z" }
+{ "index": { "_id": 3 } }
+{ "name": "Charlie", "age": 35, "status": "active", "extra_field": "to_remove", "timestamp": "2025-01-03T12:00:00Z" }
+
+PUT /transactionv1
+{
+  "mappings": {
+    "properties": {
+      "name": { "type": "text" },
+      "age": { "type": "integer" },
+      "status": { "type": "keyword" },
+      "timestamp": { "type": "date" }
+    }
+  }
+}
+
+GET /transaction/_search
+
+POST /_reindex
+{
+  "source": {
+    "index": "transaction"
+  },
+  "dest": {
+    "index": "transactionv1"
+  },
+  "script": {
+    "source": "ctx._source.remove('extra_field')"
+  }
+}
+
+
+GET /transactionv1/_search
