@@ -1,27 +1,23 @@
-PUT /_snapshot/hp_user_repo
+PUT /_snapshot/rps_stockindex_repo
 {
   "type": "fs",
   "settings": {
-    "location": "/usr/share/elasticsearch/data/backup_users",
+    "location": "/usr/share/elasticsearch/data/backup_stockindex",
     "compress": true
   }
 }
 
-GET /_snapshot/hp_user_repo
 
-POST /_snapshot/hp_user_repo/snapshot_users/_restore
+GET /_snapshot/rps_stockindex_repo
+
+
+
+GET /stock_index
+
+
+PUT /_snapshot/rps_stockindex_repo/snapshot_stockindex
 {
-  "indices": "user-2025.02.04"
-}
-
-
-
-
-GET /user-2025.02.04
-
-PUT /_snapshot/hp_user_repo/snapshot_users
-{
-  "indices": "user-2025.02.04",
+  "indices": "stock_index",
   "ignore_unavailable": true,
   "include_global_state": true,
   "metadata": {
@@ -30,19 +26,10 @@ PUT /_snapshot/hp_user_repo/snapshot_users
   }
 }
 
+DELETE /stock_index
 
-GET /users/_search
-DELETE user-2025.02.04
-
-GET /_snapshot/hp_backup_repo
-
-PUT /_snapshot/hp_backup_repo/snapshot_customer
+POST /_snapshot/rps_stockindex_repo/snapshot_stockindex/_restore
 {
-  "indices": "customerpgfeb2025",
-  "ignore_unavailable": true,
-  "include_global_state": true,
-  "metadata": {
-    "taken_by": "elasticadmin",
-    "taken_because": "Daily Backup"
-  }
+  "indices": "stock_index"
 }
+
